@@ -5,15 +5,15 @@ const CourseValidate =()=>{
             .withMessage('name filed is required').
         isLength({min:4,max:100})
             .withMessage('min length for name is 4 character and max is 100 character'),
-        body('session').notEmpty()
+        body('sessions').notEmpty()
             .withMessage('session filed is required')
             .isInt()
             .withMessage('session must integer value')
-            .isLength({min:4,max:100})
-            .withMessage('min length for session is 4 character and max is 100 character'),
+            .isInt({min:1,max:100})
+            .withMessage('min length for session is 1 character and max is 100 character'),
         body('instructor')
             .notEmpty().withMessage('instructor filed is required'),
-        body('data')
+        body('date')
             .notEmpty()
             .withMessage('data filed is required')
             .isDate({ format: 'YYYY-MM-DD' })
