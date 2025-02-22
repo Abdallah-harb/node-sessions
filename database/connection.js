@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const url = "mongodb+srv://abdallahabdelrahman186:Abdallah15@learn-mongo-db.74qhc.mongodb.net/codeZone?retryWrites=true&w=majority&appName=learn-mongo-db";
+const url = process.env.MONGO_URL;
 
 mongoose.connect(url).then(()=>{
     console.log('mongo db started');

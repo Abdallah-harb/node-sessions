@@ -3,7 +3,13 @@ const {validationResult} = require("express-validator");
 const Course = require('../model/CourseModel');
 
 exports.index=async (req, res) => {
-    const courses = await Course.find();
+    const options = {
+        page: req.query.page || 1,
+        limit: req.query.limit || 10,
+    };
+
+    const courses = await Course.paginate({}, options);
+
     return res.status(200).json({
         status: 200,
         message: "all courses",
@@ -12,12 +18,6 @@ exports.index=async (req, res) => {
 }
 
 exports.store=async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({
-            errors: errors.array()
-        });
-    }
     try{
         const course = await Course.create(req.body);
         return res.status(200).json({
@@ -64,12 +64,6 @@ exports.show=async (req, res) => {
 }
 
 exports.update = async (req,res)=>{
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({
-            errors: errors.array()
-        });
-    }
     try{
         const course = await Course.findById(req.params.id);
         if (!course) {
