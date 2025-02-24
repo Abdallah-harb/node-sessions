@@ -1,22 +1,18 @@
 require('dotenv').config()
 const express = require('express')
-const cors = require('cors');
-const app = express()
+const corsMiddleware = require('./middleware/CorsMiddleware');
+const connectDB = require('./database/connection');
+const app = express();
 const port = process.env.APP_PORT;
 const apiRoute = require('./route/apiRoute');
 
-const mongoose = require('mongoose');
-const url = process.env.MONGO_URL;
 
-mongoose.connect(url).then(()=>{
+connectDB;
 
-});
-
-
-// to handel request json its
-app.use(express.json())
+app.use(express.json());
+corsMiddleware(app);
 app.use('/api',apiRoute);
-app.use(cors())
+
 // handel Not Found Route
 app.all('*',(req,res)=>{
     return res.status(404).json({

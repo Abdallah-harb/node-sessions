@@ -1,5 +1,5 @@
-const { body, validationResult } = require("express-validator");
-
+const { body } = require("express-validator");
+const {handelErrorValidate} = require('../Helpier/ErrorValidat');
 const CourseValidate = () => [
     body("name")
         .notEmpty().withMessage("Name field is required.")
@@ -18,19 +18,5 @@ const CourseValidate = () => [
         .isISO8601().withMessage("Date must be in the format YYYY-MM-DD.")
 ];
 
-const validateRequest = (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({
-            status: 422,
-            message: "Validation failed",
-            errors: errors.array().map(err => ({
-                field: err.path,
-                message: err.msg
-            }))
-        });
-    }
-    next();
-};
 
-module.exports = { CourseValidate, validateRequest };
+module.exports = { CourseValidate, handelErrorValidate };
