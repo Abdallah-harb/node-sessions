@@ -6,13 +6,23 @@ const AuthController = require('../controller/Auth/AuthController');
 const {RegisterValidate} = require('../validation/Auth/RegisterValidation');
 const {LoginValidate} = require('../validation/Auth/LoginValidation');
 const checkAuth = require('../middleware/VerifyTokenMiddleware');
+const UserController = require('../controller/Users/UserController');
+const {UserValidation} = require('../validation/Users/UsersValdation');
 
-
+// public routes
 Route.post('/register',RegisterValidate(),handelErrorValidate,AuthController.register);
 Route.post('/login',LoginValidate(),handelErrorValidate,AuthController.login);
 
 // auth routes
-Route.get('/user', checkAuth,AuthController.user);
+Route.get('/user', checkAuth,AuthController.getUser);
+
+// users
+Route.get('/users',checkAuth,UserController.index);
+Route.post('/users',checkAuth,UserValidation(),handelErrorValidate,UserController.store);
+Route.get('/users/:id',checkAuth,UserController.show);
+Route.put('/users/:id',checkAuth,UserValidation(true),handelErrorValidate,UserController.update);
+Route.delete('/users/:id',checkAuth,UserController.destroy);
+
 
 Route.get('/courses', checkAuth,CourseController.index);
 Route.get('/courses/:id', checkAuth,CourseController.show);
