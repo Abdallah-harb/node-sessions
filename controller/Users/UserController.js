@@ -1,5 +1,7 @@
 const User = require('../../model/UserModel');
 const bcrypt = require("bcryptjs");
+//const { processImageUpload } = require('../../Services/HandelImages');
+
 const index =async (req,res)=>{
     try{
         const options = {
@@ -22,8 +24,17 @@ const index =async (req,res)=>{
 
 const store =async (req,res)=>{
     try{
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
-        const user = await User.create({name:req.body.name,email:req.body.email,password: hashedPassword,role:req.body.role});
+        return res.json(req.body);
+        const { name, email, password, role } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+      //  const avatarPath = await processImageUpload(req);
+        const user = await User.create(
+            {name:name,
+                email:email,
+                password: hashedPassword,
+                role:role,
+                avatar:avatarPath
+            });
         return res.status(200).json({
             status: 200,
             message: "new User Created ",

@@ -8,18 +8,6 @@ const {LoginValidate} = require('../validation/Auth/LoginValidation');
 const checkAuth = require('../middleware/VerifyTokenMiddleware');
 const UserController = require('../controller/Users/UserController');
 const {UserValidation} = require('../validation/Users/UsersValdation');
-const multer  = require('multer');
-
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, '/Storage/uploads')
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-        cb(null, file.fieldname + '-' + uniqueSuffix)
-    }
-});
-const upload = multer({ storage: storage })
 
 // public routes
 Route.post('/register',RegisterValidate(),handelErrorValidate,AuthController.register);
@@ -30,9 +18,9 @@ Route.get('/user', checkAuth,AuthController.getUser);
 
 // users
 Route.get('/users',checkAuth,UserController.index);
-Route.post('/users',checkAuth,upload.single('avatar'),UserValidation(),handelErrorValidate,UserController.store);
+Route.post('/users',checkAuth/*,UserValidation(),handelErrorValidate*/,UserController.store);
 Route.get('/users/:id',checkAuth,UserController.show);
-Route.put('/users/:id',checkAuth,upload.single('avatar'),UserValidation(true),handelErrorValidate,UserController.update);
+Route.put('/users/:id',checkAuth,UserValidation(true),handelErrorValidate,UserController.update);
 Route.delete('/users/:id',checkAuth,UserController.destroy);
 
 
