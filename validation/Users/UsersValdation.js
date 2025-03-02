@@ -2,6 +2,8 @@ const { body } = require("express-validator");
 const {handelErrorValidate} = require('../../Helpier/ErrorValidat');
 const User = require("../../model/UserModel");
 const UserRole = require('../../Enum/RoleEnum');
+const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const UserValidation = (isUpdate = false) => [
     body("name")
         .notEmpty().withMessage("Name field is required.")
@@ -37,7 +39,23 @@ const UserValidation = (isUpdate = false) => [
 
     body('role')
         .optional()
-        .isIn(Object.values(UserRole)).withMessage(`Role must be one of: ${Object.values(UserRole).join(", ")}`)
+        .isIn(Object.values(UserRole)).withMessage(`Role must be one of: ${Object.values(UserRole).join(", ")}`),
+
+    body('avatar')
+        .optional()
+        .custom((_, { req }) => {
+            if (!req.file) return true;
+            const { mimetype, size } = req.file;
+            if (!ALLOWED_MIME_TYPES.includes(mimetype)) {
+                throw new Error(`Invalid file type. Allowed formats: ${ALLOWED_MIME_TYPES.join(", ")}`);
+            }
+
+            if (size > MAX_FILE_SIZE) {
+                throw new Error(`File size exceeds the maximum limit of ${MAX_FILE_SIZE / (1024 * 1024)}MB`);
+            }
+
+            return true;
+        })
 
 ];
 

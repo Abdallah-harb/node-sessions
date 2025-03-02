@@ -7,7 +7,8 @@ const schema = new mongoose.Schema(
         email: { type: String, required: true,unique:true },
         email_verified_at: { type: String, required: false },
         password: { type: String, required: true },
-        role:{type:String,enum:[UserRole.USER,UserRole.ADMIN,UserRole.MANAGER],default:UserRole.USER}
+        role:{type:String,enum:[UserRole.USER,UserRole.ADMIN,UserRole.MANAGER],default:UserRole.USER},
+        avatar:{type:String,default:"Storage/uploads/profile.png"}
     },
     { timestamps: true ,versionKey: false}
 );
