@@ -1,6 +1,8 @@
 const User = require('../../model/UserModel');
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
+const {Auth} = require("../../Services/UserServices");
+
 
 const register = async (req,res)=>{
     try{
@@ -20,7 +22,7 @@ const register = async (req,res)=>{
 
 const login =async (req,res)=>{
     try{
-        const user = await User.findOne({email:req.body.email});
+        const user = await Auth();
         if(!user){
             return res.status(401).json({status: 401,message: "Invalid credentials",})
         }
