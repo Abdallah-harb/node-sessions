@@ -5,15 +5,16 @@ const connectDB = require('./database/connection');
 const app = express();
 const port = process.env.APP_PORT;
 const apiRoute = require('./route/apiRoute');
-
+const path = require('path');
 
 connectDB;
 
 app.use(express.json());
-corsMiddleware(app);
-app.use('/api',apiRoute);
+//app.use(express.urlencoded({ extended: true }));
 
-// handel Not Found Route
+corsMiddleware(app);
+app.use('/Storage', express.static(path.join(__dirname,'Storage')));
+app.use('/api',apiRoute);
 app.all('*',(req,res)=>{
     return res.status(404).json({
         status: 404,

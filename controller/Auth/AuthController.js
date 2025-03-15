@@ -1,9 +1,7 @@
 const User = require('../../model/UserModel');
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
-const {Auth} = require("../../Services/UserServices");
-
-
+const {Auth} = require("../../Services/AuthServices");
 const register = async (req,res)=>{
     try{
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -22,7 +20,7 @@ const register = async (req,res)=>{
 
 const login =async (req,res)=>{
     try{
-        const user = await Auth();
+        const user = await User.findOne({email:req.body.email});
         if(!user){
             return res.status(401).json({status: 401,message: "Invalid credentials",})
         }
@@ -48,9 +46,9 @@ const login =async (req,res)=>{
 
 }
 
-const user =async (req,res)=>{
+const getUser =async (req,res)=>{
     try{
-        const user = await User.findOne({email:req.user.email});
+        const user = await Auth(req);
 
         return res.status(200).json({
             status: 200,
@@ -67,5 +65,5 @@ const user =async (req,res)=>{
 }
 
 module.exports={
-    register,login,user
+    register,login,getUser
 }
