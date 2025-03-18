@@ -8,6 +8,7 @@ const {LoginValidate} = require('../validation/Auth/LoginValidation');
 const checkAuth = require('../middleware/VerifyTokenMiddleware');
 const UserController = require('../controller/Users/UserController');
 const {UserValidation} = require('../validation/Users/UsersValdation');
+const { upload } = require('../Services/HandelImages');
 
 // public routes
 Route.post('/register',RegisterValidate(),handelErrorValidate,AuthController.register);
@@ -18,9 +19,9 @@ Route.get('/user', checkAuth,AuthController.getUser);
 
 // users
 Route.get('/users',checkAuth,UserController.index);
-Route.post('/users',checkAuth/*,UserValidation(),handelErrorValidate*/,UserController.store);
+Route.post('/users',checkAuth, upload.single('avatar'),UserValidation(),handelErrorValidate,UserController.store);
 Route.get('/users/:id',checkAuth,UserController.show);
-Route.put('/users/:id',checkAuth,UserValidation(true),handelErrorValidate,UserController.update);
+Route.put('/users/:id',checkAuth,upload.single('avatar'),UserValidation(true),handelErrorValidate,UserController.update);
 Route.delete('/users/:id',checkAuth,UserController.destroy);
 
 

@@ -10,7 +10,7 @@ const path = require('path');
 connectDB;
 
 app.use(express.json());
-//app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
 corsMiddleware(app);
 app.use('/Storage', express.static(path.join(__dirname,'Storage')));

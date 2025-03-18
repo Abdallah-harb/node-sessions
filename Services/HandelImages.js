@@ -17,17 +17,7 @@ const storage = multer.diskStorage({
         cb(null, file.fieldname + '-' + uniqueSuffix + ext);
     }
 });
-const upload = multer({ storage: storage });
 
-const processImageUpload = (req) => {
-    return new Promise((resolve, reject) => {
-        upload.single('avatar')(req, {}, (err) => {
-            if (err) {
-                return reject(err);
-            }
-            resolve(req.file ? req.file.path : null);
-        });
-    });
-};
+const upload = multer({ storage });
 
-module.exports = { processImageUpload };
+module.exports = { upload };
