@@ -1,16 +1,22 @@
 require('dotenv').config()
 const express = require('express')
+const { createServer } = require('node:http');
+const { Server } = require('socket.io');
 const corsMiddleware = require('./middleware/CorsMiddleware');
 const connectDB = require('./database/connection');
 const app = express();
+const server = createServer(app);
+const io = new Server(server);
 const port = process.env.APP_PORT;
 const apiRoute = require('./route/apiRoute');
 const path = require('path');
 
+// to avoid circular dependency
+require('./socket')(io);
 connectDB;
 
 app.use(express.json());
-//app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
 corsMiddleware(app);
 app.use('/Storage', express.static(path.join(__dirname,'Storage')));
@@ -22,7 +28,6 @@ app.all('*',(req,res)=>{
     });
 });
 
-
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })

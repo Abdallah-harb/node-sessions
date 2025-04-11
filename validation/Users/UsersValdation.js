@@ -42,18 +42,15 @@ const UserValidation = (isUpdate = false) => [
         .isIn(Object.values(UserRole)).withMessage(`Role must be one of: ${Object.values(UserRole).join(", ")}`),
 
     body('avatar')
-        .optional()
         .custom((_, { req }) => {
             if (!req.file) return true;
             const { mimetype, size } = req.file;
             if (!ALLOWED_MIME_TYPES.includes(mimetype)) {
                 throw new Error(`Invalid file type. Allowed formats: ${ALLOWED_MIME_TYPES.join(", ")}`);
             }
-
             if (size > MAX_FILE_SIZE) {
                 throw new Error(`File size exceeds the maximum limit of ${MAX_FILE_SIZE / (1024 * 1024)}MB`);
             }
-
             return true;
         })
 
