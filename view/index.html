@@ -19,6 +19,7 @@
 <body>
 <ul id="messages"></ul>
 <form id="form" action="">
+  <p id="typing_status"></p>
   <input id="input" autocomplete="off" /><button>Send</button>
 </form>
 
@@ -29,6 +30,7 @@
   const form = document.getElementById('form');
   const input = document.getElementById('input');
   const messages = document.getElementById('messages');
+  const TypingStatus = document.getElementById('typing_status');
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -43,6 +45,26 @@
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
   });
+
+  // typing realtime
+  input.addEventListener('keydown',()=>{
+    socket.emit('typing');
+  })
+  // listing for event typing
+  socket.on('show_typing_status',()=>{
+    TypingStatus.innerHTML="Typing ... ";
+  });
+
+  input.addEventListener('keyup',()=>{
+    socket.emit('typing_status');
+  });
+
+  socket.on('stop_typing',()=>{
+    setTimeout(()=>{
+      TypingStatus.innerHTML="";
+    },500);
+  });
+
 </script>
 </body>
 </html>
