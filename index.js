@@ -6,11 +6,15 @@ const corsMiddleware = require('./middleware/CorsMiddleware');
 const connectDB = require('./database/connection');
 const app = express();
 const server = createServer(app);
-const io = new Server(server);
+const io = require('socket.io')(server, {
+    cors: {
+        origin: '*'
+    }
+});
 const port = process.env.APP_PORT;
 const apiRoute = require('./route/apiRoute');
 const path = require('path');
-
+global._io = io; // Make io accessible globally
 // to avoid circular dependency
 require('./socket')(io);
 connectDB;
