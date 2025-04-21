@@ -20,12 +20,9 @@
 <ul id="messages"></ul>
 <form id="form" action="">
   <p id="typing_status"></p>
-<<<<<<< HEAD
   <input id="input" autocomplete="off" />
   <button>Send</button>
-=======
-  <input id="input" autocomplete="off" /><button>Send</button>
->>>>>>> 97fa47a22dc26c2b62f8cd81bde5d90844ad3b69
+
 </form>
 
 <script src="/socket.io/socket.io.js"></script>
@@ -35,11 +32,11 @@
   const form = document.getElementById('form');
   const input = document.getElementById('input');
   const messages = document.getElementById('messages');
-<<<<<<< HEAD
+
   const typing = document.getElementById('typing_status');
-=======
+
   const TypingStatus = document.getElementById('typing_status');
->>>>>>> 97fa47a22dc26c2b62f8cd81bde5d90844ad3b69
+
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -54,11 +51,11 @@
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
   });
-<<<<<<< HEAD
+
   input.addEventListener('keydown', ()=>{
     socket.emit('typing');
   })
-=======
+
 
   // typing realtime
   input.addEventListener('keydown',()=>{
@@ -79,7 +76,6 @@
     },500);
   });
 
->>>>>>> 97fa47a22dc26c2b62f8cd81bde5d90844ad3b69
 </script>
 </body>
 </html>

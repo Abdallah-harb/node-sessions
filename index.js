@@ -14,7 +14,7 @@ const io = require('socket.io')(server, {
 const port = process.env.APP_PORT;
 const apiRoute = require('./route/apiRoute');
 const path = require('path');
-global._io = io; // Make io accessible globally
+app.set('io', io); // Make io accessible globally
 // to avoid circular dependency
 require('./socket')(io);
 connectDB;

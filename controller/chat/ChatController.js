@@ -1,9 +1,7 @@
 const {join} = require('path')
-const { io } = require('../../index');
 const Conversation = require('../../model/ConversationModel');
 const Message = require('../../model/MessageModel');
 const {Auth} = require("../../Services/AuthServices");
-
 
 // test with html socket
 // exports.index =  (req,res)=>{
@@ -73,11 +71,6 @@ exports.startConversation =async (req,res)=>{
             message: message
         });
 
-        //  Fire real-time event to the receiver
-        global._io.to(receiver_id.toString()).emit("new-message", {
-            conversation_id: conversation._id,
-            message: newMessage
-        });
 
         return res.status(200).json({
             status: 200,
