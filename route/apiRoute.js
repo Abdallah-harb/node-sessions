@@ -10,6 +10,7 @@ const UserController = require('../controller/Users/UserController');
 const {UserValidation} = require('../validation/Users/UsersValdation');
 const { upload } = require('../Services/HandelImages');
 const ChatController = require('../controller/chat/ChatController');
+const {ConversationValidate } = require('../validation/chat/ConversationValdation');
 
 // public routes
 Route.post('/register',RegisterValidate(),handelErrorValidate,AuthController.register);
@@ -35,6 +36,9 @@ Route.put('/courses/:id', checkAuth , CourseValidate(),handelErrorValidate,Cours
 Route.delete('/courses/:id', checkAuth,CourseController.destroy);
 
 //chat
-Route.get('/chat',ChatController.index);
+// Route.get('/chat',ChatController.index);
+Route.get('/all-conversations',checkAuth,ChatController.allConversations);
+Route.post('/start-conversation',checkAuth,ConversationValidate(),handelErrorValidate,ChatController.startConversation);
+Route.post('/send-message',checkAuth,ChatController.sendMessage);
 
 module.exports = Route;
