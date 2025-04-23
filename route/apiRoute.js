@@ -13,6 +13,8 @@ const ChatController = require('../controller/chat/ChatController');
 
 // public routes
 Route.post('/register',RegisterValidate(),handelErrorValidate,AuthController.register);
+Route.post('/password/forget-password',AuthController.forgetPassword);
+Route.post('/password/reset-password/:user_id/:token',AuthController.resetPassword);
 Route.post('/login',LoginValidate(),handelErrorValidate,AuthController.login);
 
 // auth routes
